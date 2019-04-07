@@ -1,6 +1,6 @@
 {
   "name": "@ziggurat/tiamat-inversify",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Tiamat implementation built on InversifyJS",
   "scripts": {
     "test": "mocha --opts mocha.opts"
@@ -36,6 +36,6 @@
     "typescript": "^2.5.0"
   },
   "peerDependencies": {
-    "@ziggurat/tiamat": "^0.11.0"
+    "@ziggurat/tiamat": "^0.12.0"
   }
 }
