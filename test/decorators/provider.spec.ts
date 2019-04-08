@@ -1,5 +1,5 @@
 import {InversifyAdapter} from '../../src/container';
-import {provider} from '@ziggurat/tiamat';
+import {provider, provide} from '@ziggurat/tiamat';
 import {expect} from 'chai';
 import 'mocha';
 
@@ -14,7 +14,7 @@ describe('provider', () => {
 
     it('should register', () => {
       expect(() => {
-        container.registerProvider(SingletonProvider);
+        provide(container, SingletonProvider);
       }).to.not.throw();
     });
 
@@ -35,7 +35,7 @@ describe('provider', () => {
 
     it('should register', () => {
       expect(() => {
-        container.registerProvider(TransientProvider);
+        provide(container, TransientProvider);
       }).to.not.throw();
     });
 

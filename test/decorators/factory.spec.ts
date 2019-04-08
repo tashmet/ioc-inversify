@@ -6,8 +6,10 @@ import 'mocha';
 describe('factory', () => {
   let container = new InversifyAdapter();
 
-  class Foo {}
-  class Bar {}
+  class Foo {
+    constructor(public dep = '') {}
+  }
+  class Bar extends Foo {}
 
   describe('creating singleton object', () => {
     class SingletonFact {
@@ -17,7 +19,7 @@ describe('factory', () => {
     }
 
     it('should register provider', () => {
-      expect(() => container.registerClass(SingletonFact, SingletonFact)).to.not.throw();
+      expect(() => container.registerSingleton(SingletonFact, SingletonFact)).to.not.throw();
     });
 
     it('should create an instance', () => {
@@ -41,7 +43,7 @@ describe('factory', () => {
     }
 
     it('should register provider', () => {
-      expect(() => container.registerClass(TransientFact, TransientFact)).to.not.throw();
+      expect(() => container.registerSingleton(TransientFact, TransientFact)).to.not.throw();
     });
 
     it('should create an instance', () => {
@@ -68,7 +70,7 @@ describe('factory', () => {
       class DefaultFact extends FactBase {}
 
       it('should register provider', () => {
-        expect(() => container.registerClass(DefaultFact, DefaultFact)).to.not.throw();
+        expect(() => container.registerSingleton(DefaultFact, DefaultFact)).to.not.throw();
       });
 
       it('should create an instance', () => {
@@ -84,12 +86,41 @@ describe('factory', () => {
       }
 
       it('should register provider', () => {
-        expect(() => container.registerClass(OverloadFact, OverloadFact)).to.not.throw();
+        expect(() => container.registerSingleton(OverloadFact, OverloadFact)).to.not.throw();
       });
 
       it('should create an overloaded instance', () => {
         expect(container.get('inherited')).to.be.instanceof(Bar);
       });
+    });
+  });
+
+  describe('injecting services', () => {
+    class Fact {
+      @factory({
+        key: 'foo',
+        inject: ['dependency']
+      }) public fact(dep: any) {
+        return new Foo(dep);
+      }
+    }
+
+    it('should register provider', () => {
+      expect(() => container.registerInstance('dependency', 'value')).to.not.throw();
+      expect(() => container.registerSingleton(Fact, Fact)).to.not.throw();
+    });
+
+    it('should create an instance', () => {
+      let foo = container.get<Foo>('foo');
+      expect(foo).to.be.instanceof(Foo);
+      expect(foo.dep).to.eql('value');
+    });
+
+    it('should be singleton', () => {
+      const foo1 = container.get<Foo>('foo');
+      const foo2 = container.get<Foo>('foo');
+
+      expect(foo1).to.equal(foo2);
     });
   });
 });
