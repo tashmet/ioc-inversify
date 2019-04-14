@@ -1,10 +1,11 @@
-import {InversifyAdapter} from '../../src/container';
 import {factory} from '@ziggurat/tiamat';
+import {Container as InversifyContainer} from 'inversify';
+import {InversifyAdapter} from '../../src/container';
 import {expect} from 'chai';
 import 'mocha';
 
 describe('factory', () => {
-  let container = new InversifyAdapter();
+  let container = new InversifyAdapter(new InversifyContainer());
 
   class Foo {
     constructor(public dep = '') {}

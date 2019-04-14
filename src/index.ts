@@ -1,6 +1,7 @@
 import {Container} from '@ziggurat/tiamat';
+import {Container as InversifyContainer} from 'inversify';
 import {InversifyAdapter} from './container';
 
-export function container(): Container {
-  return new InversifyAdapter();
+export function container(cnt: InversifyContainer): Container {
+  return new InversifyAdapter(cnt);
 }

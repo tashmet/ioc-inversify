@@ -1,4 +1,5 @@
-import {bootstrap, bootstrapDone, component, provider, Container} from '@ziggurat/tiamat';
+import {bootstrap, component, provider} from '@ziggurat/tiamat';
+import {Container as InversifyContainer} from 'inversify';
 import {InversifyAdapter} from '../../src/container';
 import {expect} from 'chai';
 import 'mocha';
@@ -10,7 +11,7 @@ describe('component', () => {
 
     it('should bootstrap an empty component', async () => {
       return expect(
-        await bootstrap(new InversifyAdapter(), TestComponent)
+        await bootstrap(new InversifyAdapter(new InversifyContainer()), TestComponent)
       ).to.be.instanceof(TestComponent);
     });
   });
@@ -31,7 +32,7 @@ describe('component', () => {
 
     it('should register providers', async () => {
       return expect(
-        (await bootstrap(new InversifyAdapter(), TestComponent)).testProvider
+        (await bootstrap(new InversifyAdapter(new InversifyContainer()), TestComponent)).testProvider
       ).to.be.instanceOf(TestProvider);
     });
   });
@@ -51,31 +52,8 @@ describe('component', () => {
 
     it('should register definitions', async () => {
       return expect(
-        (await bootstrap(new InversifyAdapter(), TestComponent)).foo
+        (await bootstrap(new InversifyAdapter(new InversifyContainer()), TestComponent)).foo
       ).to.eql('bar');
-    });
-  });
-
-  describe('bootstrapDone', () => {
-    @component({
-      inject: ['tiamat.Container']
-    })
-    class TestComponent {
-      constructor(
-        public container: Container
-      ) {}
-    }
-
-    it('should be called when bootstrapping is done', (done) => {
-      bootstrap(new InversifyAdapter(), TestComponent, async (container) => {
-        bootstrapDone(container, () => done());
-      });
-    });
-
-    it('should be called if bootstrapping is already done', (done) => {
-      bootstrap(new InversifyAdapter(), TestComponent).then(c => {
-        bootstrapDone(c.container, () => done());
-      });
     });
   });
 });

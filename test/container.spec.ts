@@ -1,9 +1,10 @@
+import {Container as InversifyContainer} from 'inversify';
 import {InversifyAdapter} from '../src/container';
 import {expect} from 'chai';
 import 'mocha';
 
 describe('InversifyAdapter', () => {
-  let container = new InversifyAdapter();
+  let container = new InversifyAdapter(new InversifyContainer());
 
   describe('constant value definition', () => {
     it('should store and retrieve a constant value', () => {

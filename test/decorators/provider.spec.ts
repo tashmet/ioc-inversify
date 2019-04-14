@@ -1,10 +1,11 @@
-import {InversifyAdapter} from '../../src/container';
 import {provider, provide} from '@ziggurat/tiamat';
+import {Container as InversifyContainer} from 'inversify';
+import {InversifyAdapter} from '../../src/container';
 import {expect} from 'chai';
 import 'mocha';
 
 describe('provider', () => {
-  let container = new InversifyAdapter();
+  let container = new InversifyAdapter(new InversifyContainer());
 
   describe('singleton-scoped provider', () => {
     @provider({
