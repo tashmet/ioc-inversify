@@ -37,9 +37,9 @@ describe('component', () => {
     });
   });
 
-  describe('with definitions', () => {
+  describe('with instances', () => {
     @component({
-      definitions: {
+      instances: {
         'foo': 'bar'
       },
       inject: ['foo']
@@ -50,7 +50,7 @@ describe('component', () => {
       ) {}
     }
 
-    it('should register definitions', async () => {
+    it('should register instances', async () => {
       return expect(
         (await bootstrap(new InversifyAdapter(new InversifyContainer()), TestComponent)).foo
       ).to.eql('bar');
