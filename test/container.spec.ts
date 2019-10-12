@@ -9,11 +9,11 @@ describe('InversifyAdapter', () => {
   describe('constant value definition', () => {
     it('should store and retrieve a constant value', () => {
       expect(() => container.registerInstance('test.Constant', 123)).to.not.throw();
-      expect(container.get<string>('test.Constant')).to.equal(123);
+      expect(container.resolve('test.Constant')).to.equal(123);
     });
     it('should override a previous binding', () => {
       expect(() => container.registerInstance('test.Constant', 456)).to.not.throw();
-      expect(container.get<string>('test.Constant')).to.equal(456);
+      expect(container.resolve('test.Constant')).to.equal(456);
     });
   });
 });
